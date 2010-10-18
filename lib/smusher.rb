@@ -54,7 +54,15 @@ module Smusher
     raise "Error: got larger" if size(file) < optimized.size
     raise "Error: empty file downloaded" if optimized.size < MINIMUM_IMAGE_SIZE
     raise "cannot be optimized further" if size(file) == optimized.size
+    file =~ /^(.*\/)(.*)(\..*?)$/
+    dir = $1
+    filename = $2
+    ext = $3
+     
+    file = dir + filename + "_smu" + ext
 
+
+    puts "Output File: #{file}"
     File.open(file,'wb') {|f| f.write optimized}
 
     if service.converts_gif_to_png? && File.extname(file) == ".gif" && optimized[0..2] != "GIF"
